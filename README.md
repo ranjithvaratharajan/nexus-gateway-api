@@ -103,4 +103,4 @@ The project includes a GitHub Action in `.github/workflows/deploy.yml` configure
 
 ---
 
-Built with ❤️ by [Your Name/Team]
+Built with ❤️ by VaRanjith
