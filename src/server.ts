@@ -3,10 +3,10 @@ import { config } from './config/env';
 
 const startServer = async () => {
     try {
-        app.listen(config.PORT, () => {
-            console.log(`🚀 Nexus Gateway is running on port ${config.PORT}`);
-            console.log(`👉 FlowMinds Module: http://localhost:${config.PORT}/api/v1/flowminds/generate`);
-            console.log(`👉 LoveLedger Module: http://localhost:${config.PORT}/api/v1/loveledger/status`);
+        const port = process.env.PORT || config.PORT;
+        app.listen(port, () => {
+            console.log(`🚀 Nexus Gateway is running on port ${port}`);
+            console.log(`👉 Health Check: http://localhost:${port}/health`);
         });
     } catch (error) {
         console.error('Failed to start server:', error);

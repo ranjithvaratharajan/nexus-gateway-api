@@ -5,10 +5,7 @@ export class GeminiProvider implements IAIProvider {
     private genAI: GoogleGenerativeAI;
 
     constructor(apiKey: string) {
-        if (!apiKey) {
-            throw new Error('GeminiProvider requires an API key.');
-        }
-        this.genAI = new GoogleGenerativeAI(apiKey);
+        this.genAI = new GoogleGenerativeAI(apiKey || 'DUMMY_KEY');
     }
 
     async generateText(prompt: string, systemInstruction?: string): Promise<string> {
