@@ -16,6 +16,28 @@ app.use(express.json());
 app.use('/api/v1/flowminds', flowMindsRoutes);
 app.use('/api/v1/loveledger', loveLedgerRoutes);
 
+// Root landing page
+app.get('/', (req, res) => {
+    res.json({
+        name: "Nexus Gateway API",
+        message: "Welcome to the Nexus Gateway. The API is operational.",
+        version: "1.0.0",
+        endpoints: {
+            health: "/health",
+            api_v1: "/api/v1"
+        }
+    });
+});
+
+// API Info
+app.get('/api', (req, res) => {
+    res.json({
+        message: "Nexus Gateway API v1",
+        base_path: "/api/v1",
+        available_modules: ["flowminds", "loveledger"]
+    });
+});
+
 // Health Check
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
