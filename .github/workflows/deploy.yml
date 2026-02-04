@@ -28,6 +28,13 @@ jobs:
       - name: Build Application
         run: npm run build
 
+      - name: Prepare production package.json
+        run: |
+          cp package.json dist/
+          cp package-lock.json dist/
+          # Update the start script to work from within the dist folder
+          sed -i 's/"start": "node dist\/server.js"/"start": "node server.js"/' dist/package.json
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
