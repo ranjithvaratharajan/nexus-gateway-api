@@ -3,6 +3,7 @@ import { FlowMindsController } from './controllers/flowminds.controller';
 import { FlowMindsService } from './services/flowminds.service';
 import { GeminiProvider } from '../../core/ai/GeminiProvider';
 import { config } from '../../config/env';
+import { rateLimiter } from './middleware/rateLimit.middleware';
 
 const router = Router();
 
@@ -10,7 +11,13 @@ const router = Router();
 // Note: In a larger app, use a DI container (e.g., InversifyJS)
 const getApiKey = () => config.FLOWMINDS_GEMINI_KEY || config.GLOBAL_GEMINI_KEY || '';
 
-router.post('/generate', async (req, res) => {
+router.get('/quota', (req, res) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const quota = rateLimiter.getQuota(String(ip));
+    res.json(quota);
+});
+
+router.post('/generate', rateLimiter.middleware, async (req, res) => {
     try {
         const apiKey = getApiKey();
         if (!apiKey) {

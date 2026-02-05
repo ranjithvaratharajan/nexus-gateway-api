@@ -7,6 +7,7 @@ Nexus Gateway is a high-performance, modular API gateway built with Node.js and 
 -   **🤖 FlowMinds AI Engine**: Generate production-ready Mermaid.js diagrams from natural language prompts using Google's Gemini 2.0 Flash.
 -   **📚 Modular Architecture**: Clean, scalable directory structure with separate modules for distinct services.
 -   **🛡️ Secure by Default**: Built-in security headers with Helmet, CORS protection, and type-safe validation using Zod.
+-   **⏱️ Rate Limiting**: Built-in protection for AI endpoints (50 requests/day per IP) with quota tracking.
 -   **⚙️ Intelligent Configuration**: Strongly-typed environment variable management.
 -   **🚀 CI/CD Ready**: Automated deployment via GitHub Actions (FTP-ready).
 
@@ -17,7 +18,7 @@ Nexus Gateway is a high-performance, modular API gateway built with Node.js and 
 -   **Framework**: Express.js
 -   **AI**: Google Generative AI (Gemini SDK)
 -   **Validation**: Zod
--   **Security**: Helmet, CORS
+-   **Security**: Helmet, CORS, Rate Limiting
 -   **Dev Tools**: Nodemon, TS-Node
 
 ## 🚀 Getting Started
@@ -65,8 +66,13 @@ npm start
 ## 🔌 API Reference
 
 ### FlowMinds (AI Diagrams)
+
+#### Generate Diagram
 -   **URL**: `/api/v1/flowminds/generate`
 -   **Method**: `POST`
+-   **Headers**:
+    -   `X-RateLimit-Limit`: Daily limit (50)
+    -   `X-RateLimit-Remaining`: Requests remaining
 -   **Body**:
     ```json
     {
@@ -74,6 +80,19 @@ npm start
     }
     ```
 -   **Response**: Returns valid Mermaid.js syntax.
+-   **Error (429)**: Daily limit exceeded.
+
+#### Check Quota
+-   **URL**: `/api/v1/flowminds/quota`
+-   **Method**: `GET`
+-   **Response**:
+    ```json
+    {
+      "remaining": 49,
+      "limit": 50,
+      "resetAt": "2024-03-20T18:30:00.000Z"
+    }
+    ```
 
 ### LoveLedger (Finance Module)
 -   **URL**: `/api/v1/loveledger/status`
