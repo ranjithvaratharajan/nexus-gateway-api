@@ -11,10 +11,13 @@ const router = Router();
 // Note: In a larger app, use a DI container (e.g., InversifyJS)
 const getApiKey = () => config.FLOWMINDS_GEMINI_KEY || config.GLOBAL_GEMINI_KEY || '';
 
-router.get('/quota', (req, res) => {
-    const ip = req.ip || req.socket.remoteAddress || 'unknown';
-    const quota = rateLimiter.getQuota(String(ip));
-    res.json(quota);
+router.get('/quota', async (req, res) => {
+    try {
+        const quota = await rateLimiter.getQuota();
+        res.json(quota);
+    } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 router.post('/generate', rateLimiter.middleware, async (req, res) => {

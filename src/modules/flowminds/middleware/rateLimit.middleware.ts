@@ -4,6 +4,26 @@ import { db } from '../../../config/firebase';
 const LIMIT = 50;
 
 export const rateLimiter = {
+    getQuota: async () => {
+        const today = new Date().toISOString().split('T')[0];
+        const docRef = db.collection('rate_limits').doc('flowminds');
+        const doc = await docRef.get();
+
+        let currentCount = 0;
+        if (doc.exists) {
+            const data = doc.data();
+            if (data?.date === today) {
+                currentCount = data.count || 0;
+            }
+        }
+
+        return {
+            remaining: Math.max(0, LIMIT - currentCount),
+            limit: LIMIT,
+            resetAt: new Date(new Date().setHours(24, 0, 0, 0)).toISOString() // Midnight tonight
+        };
+    },
+
     middleware: async (req: Request, res: Response, next: NextFunction) => {
         const today = new Date().toISOString().split('T')[0];
         const docRef = db.collection('rate_limits').doc('flowminds');
