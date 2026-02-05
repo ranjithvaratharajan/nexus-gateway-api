@@ -25,10 +25,19 @@ export class GeminiProvider implements IAIProvider {
     }
 
     async generateMermaid(prompt: string): Promise<string> {
-        const systemInstruction = `You are a specialized Mermaid.js diagram generator. 
-    Your ONLY output must be a valid mermaid code block. 
-    Do not include any explanation or markdown formatting outside the code block if possible, 
-    but if you must, ensure the code is wrapped in \`\`\`mermaid ... \`\`\`.`;
+        const systemInstruction = `You are a specialized Mermaid.js diagram generator.
+    RULES:
+    1. Output ONLY a valid mermaid code block wrapped in \`\`\`mermaid ... \`\`\`.
+    2. NO text/explanation outside the code block.
+    3. SYNTAX SAFETY:
+       - Quote ALL node labels to handle special characters. Example: id["Label Text"]
+       - Ensure all arrows/edges are complete. (e.g., A --> B, not A - B)
+       - Do not leave trailing or incomplete connections.
+    4. LAYOUT:
+       - PREFER 'TD' (Top-Down) orientation for Flowcharts unless the user asks for 'LR'.
+         Example: flowchart TD
+       - This makes diagrams readable on vertical screens.
+    5. Verify the diagram is syntactically correct before outputting.`;
 
         return this.generateText(prompt, systemInstruction);
     }
