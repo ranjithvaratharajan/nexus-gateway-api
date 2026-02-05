@@ -7,7 +7,7 @@ Nexus Gateway is a high-performance, modular API gateway built with Node.js and 
 -   **🤖 FlowMinds AI Engine**: Generate production-ready Mermaid.js diagrams from natural language prompts using Google's Gemini 2.0 Flash.
 -   **📚 Modular Architecture**: Clean, scalable directory structure with separate modules for distinct services.
 -   **🛡️ Secure by Default**: Built-in security headers with Helmet, CORS protection, and type-safe validation using Zod.
--   **⏱️ Rate Limiting**: Built-in protection for AI endpoints (50 requests/day per IP) with quota tracking.
+-   **⏱️ Rate Limiting**: Centralized global protection for AI endpoints (50 requests/day total) backed by **Firebase Firestore**.
 -   **⚙️ Intelligent Configuration**: Strongly-typed environment variable management.
 -   **🚀 CI/CD Ready**: Automated deployment via GitHub Actions (FTP-ready).
 
@@ -16,9 +16,10 @@ Nexus Gateway is a high-performance, modular API gateway built with Node.js and 
 -   **Runtime**: Node.js (v20+)
 -   **Language**: TypeScript
 -   **Framework**: Express.js
+-   **Database**: Firebase Firestore (for Rate Limiting)
 -   **AI**: Google Generative AI (Gemini SDK)
 -   **Validation**: Zod
--   **Security**: Helmet, CORS, Rate Limiting
+-   **Security**: Helmet, CORS, Global Rate Limiting
 -   **Dev Tools**: Nodemon, TS-Node
 
 ## 🚀 Getting Started
@@ -28,6 +29,7 @@ Nexus Gateway is a high-performance, modular API gateway built with Node.js and 
 -   Node.js v20 or higher
 -   npm or yarn
 -   A Google Gemini API Key (Get it at [Google AI Studio](https://aistudio.google.com/))
+-   **Firebase Service Account**: You need a `serviceAccountKey.json` from your Firebase project placed in the root directory.
 
 ### Installation
 

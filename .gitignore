@@ -24,3 +24,6 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase
+serviceAccountKey.json
